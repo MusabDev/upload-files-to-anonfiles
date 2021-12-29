@@ -12,9 +12,13 @@ if (isset($_POST["submit"])) {
       CURLOPT_POST => 1,
       CURLOPT_POSTFIELDS => array(
         "file" => new CURLFile("uploads/" . $filename)
-      )
+      ),
+      CURLOPT_RETURNTRANSFER => 1
     ));
     $result = curl_exec($ch);
+    $json = json_decode($result);
+
+    $msg = $url = $json->data->file->url->short;
     curl_close($ch);
     unlink("uploads/" . $filename);
   } else {
